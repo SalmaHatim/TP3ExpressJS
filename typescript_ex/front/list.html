@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold mb-4">Book List</h1>
+
+        <!-- Book List -->
+        <ul id="bookList" class="space-y-4">
+            
+
+        </ul>
+    </div>
+    <div class="mt-8">
+        <div id="totalBooks" class="bg-blue-500 text-white p-6 rounded-lg text-center">
+        </div>
+    </div>
+
+    
+    <div class="mt-4">
+        <div id="totalPages" class="bg-green-500 text-white p-6 rounded-lg text-center">
+        </div>
+    </div>
+</body>
+<script>
+     async function fetchBooks() {
+            try {
+                const response = await fetch('http://localhost:3000/book/all', {method: "GET"});
+                if (!response.ok) {
+                    throw new Error('Failed to fetch book data');
+                }
+                const books = await response.json();
+                const bookList = document.getElementById('bookList');
+                const totalBooks = document.getElementById('totalBooks');
+                const totalPages = document.getElementById('totalPages');
+
+                const totalBooksTitle = document.createElement('p');
+                const totalPagesTitle = document.createElement('p');
+                totalBooksTitle.className = 'text-lg'
+                totalBooksTitle.textContent = 'Books Read'
+                totalPagesTitle.className = 'text-lg'
+                totalPagesTitle.textContent = 'Total Pages'
+                const totalBooksValue = document.createElement('p');
+                const totalPagesValue = document.createElement('p');
+                totalBooksValue.className = 'text-4xl font-bold'
+                totalBooksValue.textContent = books.length
+                totalPagesValue.className = 'text-4xl font-bold'
+
+
+                let nbrPagesRead = 0
+                
+
+                books.forEach(book => {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center';
+
+                    const bookInfo = document.createElement('div');
+                    const title = document.createElement('p');
+                    const barrier = document.createElement('hr')
+                    title.className = 'font-bold';
+                    title.textContent = book.title;
+                    const author = document.createElement('p');
+                    author.className = 'text-gray-600';
+                    author.textContent = `Author: ${book.author}`;
+                    const numberOfPages = document.createElement('p');
+                    numberOfPages.className = 'text-gray-600';
+                    numberOfPages.textContent = `number Of Pages: ${book.numberOfPages}`;
+                    const status = document.createElement('p');
+                    status.className = 'text-gray-600';
+                    status.textContent = `status: ${book.status}`;
+                    const price = document.createElement('p');
+                    price.className = 'text-gray-600';
+                    price.textContent = `price: ${book.price}`;
+                    const numberOfReadPage = document.createElement('p');
+                    numberOfReadPage.className = 'text-gray-600';
+                    numberOfReadPage.textContent = `number Of Read Page: ${book.numberOfReadPage}`;
+                    const format = document.createElement('p');
+                    format.className = 'text-gray-600';
+                    format.textContent = `format: ${book.format}`;
+                    const suggestedBy = document.createElement('p');
+                    suggestedBy.className = 'text-gray-600';
+                    suggestedBy.textContent = `suggested By: ${book.suggestedBy}`;
+                    const finished = document.createElement('p');
+                    finished.className = 'text-gray-600';
+                    finished.textContent = `finished: ${book.finished}`;
+
+                    bookInfo.appendChild(barrier)
+                    bookInfo.appendChild(title);
+                    bookInfo.appendChild(author);
+                    bookInfo.appendChild(numberOfPages);
+                    bookInfo.appendChild(status);
+                    bookInfo.appendChild(price);
+                    bookInfo.appendChild(numberOfReadPage);
+                    bookInfo.appendChild(format);
+                    bookInfo.appendChild(suggestedBy);
+                    bookInfo.appendChild(finished);
+
+                    const controls = document.createElement('div');
+                    const pagesInput = document.createElement('input');
+                    pagesInput.type = 'number';
+                    pagesInput.className = 'border rounded-md p-1 w-16 text-center';
+                    pagesInput.value = book.pages;
+                    pagesInput.addEventListener('input', async (e)=>{
+                        try{
+                            const res2 = await fetch(`http://localhost:3000/book/changeNbrPages/${book.title}/${e.target.value}`, 
+                                    {method: "POST"}
+                                );
+                            const msg =await res2.json()
+                                console.log(msg)
+                            }catch(error){
+                                console.error(error);
+
+                            }
+                    })
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md';
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.addEventListener('click', async (e)=>{
+                        try{
+                            const res2 = await fetch(`http://localhost:3000/book/deleteBook/${book.title}`, 
+                                    {method: "DELETE"}
+                                );
+                            const msg =await res2.json()
+                                console.log(msg)
+                            }catch(error){
+                                console.error(error);
+
+                            }
+                    })
+                    controls.appendChild(pagesInput);
+                    controls.appendChild(deleteButton);
+
+                    li.appendChild(bookInfo);
+                    li.appendChild(controls);
+
+                    bookList.appendChild(li);
+
+                    nbrPagesRead += book.numberOfReadPage
+                });
+                totalPagesValue.textContent = nbrPagesRead
+
+                totalBooks.appendChild(totalBooksValue)
+                totalBooks.appendChild(totalBooksTitle)
+                totalPages.appendChild(totalPagesValue)
+                totalPages.appendChild(totalPagesTitle)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchBooks();
+
+        async function changeNbrPages(e){
+            
+        }
+        
+</script>
+</html>

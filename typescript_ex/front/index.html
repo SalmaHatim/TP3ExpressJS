@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New Book</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white rounded p-8 shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">Register New Book</h2>
+        <form action="http://localhost:3000/book/addBook" method="POST">
+            <div class="mb-4">
+                <label for="title" class="block text-gray-600">Title</label>
+                <input type="text" id="title" name="title" class="w-full border rounded px-3 py-2">
+            </div>
+            <div class="mb-4">
+                <label for="author" class="block text-gray-600">Author</label>
+                <input type="text" id="author" name="author" class="w-full border rounded px-3 py-2">
+            </div>
+            <div class="mb-4">
+                <label for="pages" class="block text-gray-600">Number of Pages</label>
+                <input type="number" min="0" id="pages" name="numberOfPages" class="w-full border rounded px-3 py-2">
+            </div>
+            <div class="mb-4">
+                <label for="status" class="block text-gray-600">Status</label>
+                <select id="status" name="status" class="w-full border rounded px-3 py-2">
+                    <option value="Read">Read</option>
+                    <option value="ReRead">Re-read</option>
+                    <option value="DNF">DNF</option>
+                    <option value="CurrentlyReading">Currently reading</option>
+                    <option value="ReturnedUnread">Returned Unread</option>
+                    <option value="WantToRead">Want to read</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="price" class="block text-gray-600">Price</label>
+                <input type="number" min="0" id="price" name="price" class="w-full border rounded px-3 py-2">
+            </div>
+            <div class="mb-4">
+                <label for="pages_read" class="block text-gray-600">Number of Pages Read</label>
+                <input type="number" min="0" id="pages_read" name="numberOfReadPage" class="w-full border rounded px-3 py-2">
+            </div>
+            <div class="mb-4">
+                <label for="format" class="block text-gray-600">Format</label>
+                <select id="format" name="format" class="w-full border rounded px-3 py-2">
+                    <option value="Print">Print</option>
+                    <option value="PDF">PDF</option>
+                    <option value="Ebook">Ebook</option>
+                    <option value="AudioBook">AudioBook</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="Suggested" class="block text-gray-600">Suggested by</label>
+                <input type="tect" id="Suggested" name="suggestedBy" class="w-full border rounded px-3 py-2">
+            </div>
+            <div class="mb-4">
+                <input type="submit" value="submit" class="w-full border rounded px-3 py-2 hover:bg-blue-100">
+            </div>
+
+        </form>
